@@ -56,12 +56,14 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                logger.log(Level.INFO, line+" is valid word in data.txt");
+                // System.out.println(line);
                 wordleDatabaseConnection.addValidWord(i, line);
                 i++;
             }
 
         } catch (IOException e) {
+            logger.log(Level.SEVERE,"invalid input" );
             System.out.println("Not able to load . Sorry!");
             System.out.println(e.getMessage());
             return;
@@ -74,27 +76,22 @@ public class App {
             String guess = scanner.nextLine();
 
             while (!guess.equals("q")) {
-
-                if (guess.matches("^[a-zA-Z]{4}$")) {
                 System.out.println("You've guessed '" + guess+"'.");
-                
-               
 
                 if (wordleDatabaseConnection.isValidWord(guess)) { 
                     System.out.println("Success! It is in the the list.\n");
                 }else{
+                    logger.log(Level.INFO, guess+" wrong guess");
                     System.out.println("Sorry. This word is NOT in the the list.\n");
                 }
-            }else{
 
                 System.out.print("Enter a 4 letter word for a guess or q to quit: " );
                 guess = scanner.nextLine();
             }
         } catch (NoSuchElementException | IllegalStateException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Exception during user input", e);
+            // e.printStackTrace();
         }
 
     }
 }
-}
-
